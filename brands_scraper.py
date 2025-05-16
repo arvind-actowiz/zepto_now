@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import time
 from core.driver_setup import get_driver
 from core.database import DatabaseManager
+from core.config import DB_CONFIG
 
 def scrape_xml_urls(xml_url):
     """Scrape brand URLs and names from XML sitemap"""
@@ -33,14 +34,6 @@ def scrape_xml_urls(xml_url):
         driver.quit()
 
 if __name__ == "__main__":
-    DB_CONFIG = {
-        'host': 'localhost',
-        'database': 'zepto',
-        'user': 'root',
-        'password': 'actowiz',
-        'port': 3306
-    }
-
     xml_url = "https://www.zeptonow.com/sitemap/brands.xml"
     scraped_data = scrape_xml_urls(xml_url)
     

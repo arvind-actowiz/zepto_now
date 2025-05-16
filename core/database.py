@@ -2,6 +2,7 @@ import mysql.connector
 from mysql.connector import Error
 from typing import List, Dict, Optional
 
+
 class DatabaseManager:
     def __init__(self, db_config: Dict):
         """
@@ -145,29 +146,3 @@ class DatabaseManager:
             ORDER BY brand_name
         """)
         return self.cursor.fetchall()
-
-if __name__ == "__main__":
-    # Database configuration
-    DB_CONFIG = {
-        'host': 'localhost',
-        'database': 'zepto',
-        'user': 'root',
-        'password': 'actowiz',
-        'port': 3306
-    }
-
-    # Sample brand data
-    sample_brands = [
-        {'brand_name': 'Borges', 'url': 'https://www.zeptonow.com/brand/Borges/f2e7c6e7-1636-4251-ad8b-3deb50875378'},
-        {'brand_name': 'Beanly', 'url': 'https://www.zeptonow.com/brand/Beanly/baa84966-485c-4a2e-b783-d41aa9676c70'}
-    ]
-
-    # Using context manager for automatic connection handling
-    with DatabaseManager(DB_CONFIG) as db:
-        db.insert_brands(sample_brands)
-        
-        # Retrieve and print all brands
-        all_brands = db.get_all_brands()
-        print("\nCurrent brands in database:")
-        for brand in all_brands:
-            print(f"{brand['brand_name']}: {brand['url']}")
