@@ -11,7 +11,7 @@ A Python project to scrape brand and product data from Zepto and store it in a M
 
 ## Project Structure
 ```
-arvind-actowiz/
+zepto_now/
 ├── .env.example - Environment variables template
 ├── .gitignore - Git ignore file
 ├── README.md - This file
