@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import time
 from core.driver_setup import get_driver
+from core.database import DatabaseManager
 
 def scrape_xml_urls(xml_url):
     """Scrape brand URLs and names from XML sitemap"""
@@ -24,7 +25,6 @@ def scrape_xml_urls(xml_url):
                 data.append({
                     'brand_name': brand_name,
                     'url': url,
-                    'lastmod': url_tag.find('lastmod').text if url_tag.find('lastmod') else None
                 })
         
         return data
@@ -33,14 +33,23 @@ def scrape_xml_urls(xml_url):
         driver.quit()
 
 if __name__ == "__main__":
+    DB_CONFIG = {
+        'host': 'localhost',
+        'database': 'zepto',
+        'user': 'root',
+        'password': 'actowiz',
+        'port': 3306
+    }
+
     xml_url = "https://www.zeptonow.com/sitemap/brands.xml"
     scraped_data = scrape_xml_urls(xml_url)
     
-    for item in scraped_data:
-        print(f"Brand: {item['brand_name']}")
-        print(f"URL: {item['url']}")
-        if item['lastmod']:
-            print(f"Last Modified: {item['lastmod']}")
-        print("-" * 50)
-    
+    with DatabaseManager(DB_CONFIG) as db:
+        for item in scraped_data:
+            print(f"Brand: {item['brand_name']}")
+            print(f"URL: {item['url']}")
+            print("-" * 50)
+
+        db.insert_brands(scraped_data)
+        
     print(f"Total brands scraped: {len(scraped_data)}")
